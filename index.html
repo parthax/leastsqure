@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Least Squares Fit Calculator</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap" rel="stylesheet">
+</head>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+        width: 100vw;
+        height: 100vh;
+        background: #BEADFA;
+
+    }
+
+    .main-body {
+        width: 100vw;
+        height: 100vh;
+        background: #BEADFA;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .box1 {
+        width: 100rem;
+        height: 30rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-direction: column;
+        /* background: red; */
+
+    }
+
+    input {
+        width: 200px;
+        height: 40px;
+        outline: none;
+        border: none;
+        padding: 5px;
+        border-radius: 10px;
+        border: 2px solid #D0BFFF;
+
+
+    }
+
+    label {
+        color: #001524;
+    }
+
+    button {
+        width: 100px;
+        height: 40px;
+        border-radius: 30px;
+        border: 2px solid #D0BFFF;
+    }
+   p{
+    padding-left: 10rem;
+   }
+</style>
+
+<body>
+    <!-- least squre mehtod -->
+    <div class="main-body">
+        <div class="box1">
+            <div class="box1Set1">
+                <label for="xValues">Enter x values (comma-separated): </label>
+                <input type="text" id="xValues" placeholder="e.g., 1,2,3,4,5">
+            </div>
+            <div class="box1Set2">
+                <label for="yValues">Enter y values (comma-separated): </label>
+                <input type="text" id="yValues" placeholder="e.g., 2,3,4,5,6">
+            </div>
+            <button onclick="calculateLeastSquares()">Calculate</button>
+
+            <div class="output"></div>
+            <div class="sumX"></div>
+            <div class="sumY"></div>
+
+            <div class="sumXY"></div>
+            <div class="sumX2"></div>
+
+
+
+
+
+            </div>
+            <script>
+
+                function calculateLeastSquares() {
+                    const xInput = document.getElementById('xValues').value;
+                    const yInput = document.getElementById('yValues').value;
+
+                    const xValues = xInput.split(',').map(Number);
+                    const yValues = yInput.split(',').map(Number);
+                    const sumYElement = document.querySelector('.sumY');
+                    const sumXYElement = document.querySelector('.sumXY');
+                    const sumX2Element = document.querySelector('.sumX2');
+                    const sumXElement = document.querySelector('.sumX');
+                    // console.log(xValues);
+
+                    const n = xValues.length;
+                    // console.log(n);
+
+                    if (n !== yValues.length || n < 2) {
+                        alert('Please enter valid data for x and y.');
+                        return;
+                    }
+
+                    let sumX = 0;
+                    let sumY = 0;
+                    let sumXY = 0;
+                    let sumX2 = 0;
+
+                    for (let i = 0; i < n; i++) {
+
+                        sumX += xValues[i];
+                        sumY += yValues[i];
+                        sumXY += xValues[i] * yValues[i];
+
+                        sumX2 += xValues[i] * xValues[i];
+
+                        const x2 = xValues[i] * xValues[i];
+                        const xy = xValues[i] * yValues[i];
+                        // console.log(`Squared value of x at iteration ${i + 1}: ${x2}`);
+
+
+                        // If you want to display the squared value on the web page
+                        const paragraphForx2 = document.createElement('p');
+                        paragraphForx2.textContent = `Squared value of x  ${i + 1}: ${x2}`;
+                        document.body.appendChild(paragraphForx2);
+                        const paragraphForxy = document.createElement('p');
+                        paragraphForxy.textContent = `value of xy ${i + 1}: ${xy}`;
+                        document.body.appendChild(paragraphForxy);
+
+
+
+                    }
+
+                    const m = (n * sumXY - sumX * sumY) / (n * sumX2 - sumX * sumX);
+                    const b = (sumY - m * sumX) / n;
+                    const result = `Equation: y = ${m.toFixed(2)}x + (${b.toFixed(2)})`;
+                    console.log(result);
+                    const Output = document.querySelector('.output');
+
+                    Output.textContent = result;
+
+                    sumXElement.textContent = `Sum X: ${sumX}`;
+                    sumYElement.textContent = `Sum Y: ${sumY}`;
+                    sumXYElement.textContent = `Sum XY: ${sumXY}`;
+                    sumX2Element.textContent = `Sum X^2: ${sumX2}`;
+
+
+                }
+
+
+            </script>
+</body>
+
+</html>
